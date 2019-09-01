@@ -25,20 +25,20 @@ function makeReferral(userId, formId) {
   }
 }
 
-function _baseMessage(userId, extra) {
+function _baseMessage(userId, extra, time=Date.now()) {
   return {
     id: uuid(),
-    time: Date.now(),
+    time,
     messaging: [{
       sender: { id: PAGE_ID } ,
       recipient: { id: userId },
-      timestamp: Date.now(),
+      timestamp: time,
       ...extra
     }]
   }
 }
 
-function makeEcho(message, userId) {
+function makeEcho(message, userId, time=Date.now()) {
   const extra =  {
     message: {
       is_echo: true,
@@ -47,7 +47,7 @@ function makeEcho(message, userId) {
     }
   }
 
-  return _baseMessage(userId, extra)
+  return _baseMessage(userId, extra, time)
 }
 
 function makePostback(message, userId, idx) {
