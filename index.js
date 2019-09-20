@@ -58,6 +58,12 @@ function makePostback(message, userId, idx) {
   return _baseMessage(userId, {postback})
 }
 
+function makeQR(message, userId, idx) {
+  const payload = message.quick_replies[idx].payload
+  const qr = { quick_reply: { payload }}
+  return _baseMessage(userId, { message: qr })
+}
+
 function makeTextResponse(userId, text) {
   return _baseMessage(userId, { message: { text }})
 }
@@ -74,6 +80,7 @@ module.exports = {
   makeReferral,
   makeEcho,
   makePostback,
+  makeQR,
   makeTextResponse,
   getFields,
   makeSynthetic
