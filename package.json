@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/vlab-research/mox#readme",
   "dependencies": {
-    "@vlab-research/translate-typeform": "0.0.5",
+    "@vlab-research/translate-typeform": "0.0.6",
     "uuid": "^3.3.3"
   }
 }
