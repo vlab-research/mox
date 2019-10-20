@@ -30,8 +30,8 @@ function _baseMessage(userId, extra, time=Date.now()) {
     id: uuid(),
     time,
     messaging: [{
-      sender: { id: PAGE_ID } ,
-      recipient: { id: userId },
+      sender: { id: userId } ,
+      recipient: { id: PAGE_ID },
       timestamp: time,
       ...extra
     }]
@@ -41,6 +41,8 @@ function _baseMessage(userId, extra, time=Date.now()) {
 function makeEcho(message, userId, time=Date.now()) {
   const extra =  {
     message: {
+      sender: { id: PAGE_ID } ,
+      recipient: { id: userId },
       is_echo: true,
       metadata: message.metadata,
       text: message.text || message.attachment.payload.text,
