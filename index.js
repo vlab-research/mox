@@ -40,9 +40,9 @@ function _baseMessage(userId, extra, time=Date.now()) {
 
 function makeEcho(message, userId, time=Date.now()) {
   const extra =  {
+    sender: { id: PAGE_ID } ,
+    recipient: { id: userId },
     message: {
-      sender: { id: PAGE_ID } ,
-      recipient: { id: userId },
       is_echo: true,
       metadata: message.metadata,
       text: message.text || message.attachment.payload.text,
