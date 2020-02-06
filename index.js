@@ -74,6 +74,7 @@ function makeSynthetic(userId, event) {
   return {
     user: userId,
     source: 'synthetic',
+    page: PAGE_ID,
     event
   }
 }
@@ -85,5 +86,6 @@ module.exports = {
   makeQR,
   makeTextResponse,
   getFields,
-  makeSynthetic
+  makeSynthetic,
+  PAGE_ID
 }
