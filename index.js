@@ -79,21 +79,6 @@ function makeSynthetic(userId, event) {
   }
 }
 
-{
-   "sender": {
-     "id":"<PSID>"
-   },
-   "recipient": {
-     "id":"<PAGE_ID>"
-   },
-   "timestamp":1458692752478,
-   "optin": {
-     "type": "one_time_notif_req",
-     "payload": "<USER_DEFINED_PAYLOAD>",
-     "one_time_notif_token":"<ONE_TIME_TOKEN>",
-   }
-}
-
 function makeNotify(userId, payload) {
   const extra = {
     optin: {
