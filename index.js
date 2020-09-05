@@ -10,12 +10,12 @@ function getFields(path) {
   return form.fields.map(addCustomType).map(translator)
 }
 
-function makeReferral(userId, formId) {
+function makeReferral(userId, formId, time=Date.now(), pageId=PAGE_ID) {
   return {
     id: uuid(),
-    time: Date.now(),
+    time: time,
     messaging:[
-      { recipient: { id: PAGE_ID },
+      { recipient: { id: pageId },
         timestamp: Date.now(),
         sender: { id: userId },
         referral: {
@@ -25,22 +25,22 @@ function makeReferral(userId, formId) {
   }
 }
 
-function _baseMessage(userId, extra, time=Date.now()) {
+function _baseMessage(userId, extra, time=Date.now(), pageId=PAGE_ID) {
   return {
     id: uuid(),
     time,
     messaging: [{
       sender: { id: userId } ,
-      recipient: { id: PAGE_ID },
+      recipient: { id: pageId },
       timestamp: time,
       ...extra
     }]
   }
 }
 
-function makeEcho(message, userId, time=Date.now()) {
+function makeEcho(message, userId, time=Date.now(), pageId=PAGE_ID) {
   const extra =  {
-    sender: { id: PAGE_ID } ,
+    sender: { id: pageId } ,
     recipient: { id: userId },
     message: {
       is_echo: true,
@@ -52,34 +52,34 @@ function makeEcho(message, userId, time=Date.now()) {
   return _baseMessage(userId, extra, time)
 }
 
-function makePostback(message, userId, idx) {
+function makePostback(message, userId, idx, time=Date.now(), pageId=PAGE_ID) {
 
   const button = message.attachment.payload.buttons[idx]
   const postback = {payload: button.payload, title: button.title }
 
-  return _baseMessage(userId, {postback})
+  return _baseMessage(userId, {postback}, time, pageId)
 }
 
-function makeQR(message, userId, idx) {
+function makeQR(message, userId, idx, time=Date.now(), pageId=PAGE_ID) {
   const payload = message.quick_replies[idx].payload
   const qr = { quick_reply: { payload }}
-  return _baseMessage(userId, { message: qr })
+  return _baseMessage(userId, { message: qr }, time, pageId)
 }
 
-function makeTextResponse(userId, text) {
-  return _baseMessage(userId, { message: { text }})
+function makeTextResponse(userId, text, time=Date.now(), pageId=PAGE_ID) {
+  return _baseMessage(userId, { message: { text }}, time, pageId)
 }
 
-function makeSynthetic(userId, event) {
+function makeSynthetic(userId, event, pageId=PAGE_ID) {
   return {
     user: userId,
     source: 'synthetic',
-    page: PAGE_ID,
+    page: pageId,
     event
   }
 }
 
-function makeNotify(userId, payload) {
+function makeNotify(userId, payload, time=Date.now(), pageId=PAGE_ID) {
   const extra = {
     optin: {
       type: 'one_time_notif_req',
@@ -87,7 +87,7 @@ function makeNotify(userId, payload) {
       one_time_notif_token: 'FOOBAR'
     }
   }
-  return _baseMessage(userId, extra)
+  return _baseMessage(userId, extra, time, pageId)
 }
 
 module.exports = {
