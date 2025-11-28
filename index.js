@@ -2,7 +2,7 @@
 const uuid = require('uuid');
 const PAGE_ID = '935593143497601';
 
-const {translator, addCustomType} = require('@vlab-research/translate-typeform')
+const { translator, addCustomType } = require('@vlab-research/translate-typeform')
 const fs = require('fs')
 
 function getFields(path) {
@@ -10,27 +10,30 @@ function getFields(path) {
   return form.fields.map(addCustomType).map(translator)
 }
 
-function makeReferral(userId, formId, time=Date.now(), pageId=PAGE_ID) {
+function makeReferral(userId, formId, time = Date.now(), pageId = PAGE_ID) {
   return {
     id: uuid(),
     time: time,
-    messaging:[
-      { recipient: { id: pageId },
+    messaging: [
+      {
+        recipient: { id: pageId },
         timestamp: Date.now(),
         sender: { id: userId },
-        referral: {
+        referral: formId && {
           ref: `form.${formId}`,
           source: 'SHORTLINK',
-          type: 'OPEN_THREAD' } } ]
+          type: 'OPEN_THREAD'
+        }
+      }]
   }
 }
 
-function _baseMessage(userId, extra, time=Date.now(), pageId=PAGE_ID) {
+function _baseMessage(userId, extra, time = Date.now(), pageId = PAGE_ID) {
   return {
     id: uuid(),
     time,
     messaging: [{
-      sender: { id: userId } ,
+      sender: { id: userId },
       recipient: { id: pageId },
       timestamp: time,
       ...extra
@@ -38,9 +41,9 @@ function _baseMessage(userId, extra, time=Date.now(), pageId=PAGE_ID) {
   }
 }
 
-function makeEcho(message, userId, time=Date.now(), pageId=PAGE_ID) {
-  const extra =  {
-    sender: { id: pageId } ,
+function makeEcho(message, userId, time = Date.now(), pageId = PAGE_ID) {
+  const extra = {
+    sender: { id: pageId },
     recipient: { id: userId },
     message: {
       is_echo: true,
@@ -52,25 +55,25 @@ function makeEcho(message, userId, time=Date.now(), pageId=PAGE_ID) {
   return _baseMessage(userId, extra, time)
 }
 
-function makePostback(message, userId, idx, time=Date.now(), pageId=PAGE_ID) {
+function makePostback(message, userId, idx, time = Date.now(), pageId = PAGE_ID) {
 
   const button = message.attachment.payload.buttons[idx]
-  const postback = {payload: button.payload, title: button.title }
+  const postback = { payload: button.payload, title: button.title }
 
-  return _baseMessage(userId, {postback}, time, pageId)
+  return _baseMessage(userId, { postback }, time, pageId)
 }
 
-function makeQR(message, userId, idx, time=Date.now(), pageId=PAGE_ID) {
+function makeQR(message, userId, idx, time = Date.now(), pageId = PAGE_ID) {
   const payload = message.quick_replies[idx].payload
-  const qr = { quick_reply: { payload }}
+  const qr = { quick_reply: { payload } }
   return _baseMessage(userId, { message: qr }, time, pageId)
 }
 
-function makeTextResponse(userId, text, time=Date.now(), pageId=PAGE_ID) {
-  return _baseMessage(userId, { message: { text }}, time, pageId)
+function makeTextResponse(userId, text, time = Date.now(), pageId = PAGE_ID) {
+  return _baseMessage(userId, { message: { text } }, time, pageId)
 }
 
-function makeSynthetic(userId, event, pageId=PAGE_ID) {
+function makeSynthetic(userId, event, pageId = PAGE_ID) {
   return {
     user: userId,
     source: 'synthetic',
@@ -79,7 +82,7 @@ function makeSynthetic(userId, event, pageId=PAGE_ID) {
   }
 }
 
-function makeNotify(userId, payload, time=Date.now(), pageId=PAGE_ID) {
+function makeNotify(userId, payload, time = Date.now(), pageId = PAGE_ID) {
   const extra = {
     optin: {
       type: 'one_time_notif_req',
