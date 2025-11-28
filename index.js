@@ -7,7 +7,7 @@ const fs = require('fs')
 
 function getFields(path) {
   const form = JSON.parse(fs.readFileSync(path, 'utf-8'))
-  return form.fields.map(addCustomType).map(translator)
+  return form.fields.map(addCustomType).map(translator).map(f => f.message)
 }
 
 function makeReferral(userId, formId, time = Date.now(), pageId = PAGE_ID) {
