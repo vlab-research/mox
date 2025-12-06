@@ -1,6 +1,6 @@
 {
   "name": "@vlab-research/mox",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/vlab-research/mox#readme",
   "dependencies": {
-    "@vlab-research/translate-typeform": "0.2.0",
+    "@vlab-research/translate-typeform": "0.2.1",
     "uuid": "^3.3.3"
   }
 }
